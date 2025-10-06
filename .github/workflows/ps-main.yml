@@ -1,0 +1,54 @@
+name: PowerShell Manual # You can add your own name for the pipeline here
+
+# Trigger when committing to main branch
+on:
+  workflow_dispatch: # Allow manual triggering of the workflow
+    inputs:
+      target:
+        type: choice
+        description: Select target environment
+        default: dev
+        options: 
+        - dev
+        - stage
+        - live
+
+jobs:
+  # Get changes from cloud
+  cloud-sync:
+    name: "Umbraco Cloud Sync"
+    uses: ./.github/workflows/ps-cloud-sync.yml
+    secrets:
+      projectId: ${{ secrets.PROJECT_ID }}
+      umbracoCloudApiKey: ${{ secrets.UMBRACO_CLOUD_API_KEY }}
+    with:
+      targetEnvironmentAlias: ${{ github.event.inputs.target }}
+
+  # Pack and upload the deployment Artifact
+  cloud-artifact:
+    name: "Prepare and Upload Artifact"
+    uses: ./.github/workflows/ps-cloud-artifact.yml
+    needs: cloud-sync
+    with:
+      newSha: ${{ needs.cloud-sync.outputs.newSha }}
+    secrets:
+      projectId: ${{ secrets.PROJECT_ID }}
+      umbracoCloudApiKey: ${{ secrets.UMBRACO_CLOUD_API_KEY }}
+
+  # Deploy to Umbraco Cloud
+  # ####
+  # you can edit the variables noBuildAndRestore, skipVersionCheck and allowAnyTarget
+  # use 0 for false and 1 for true
+  cloud-deployment:
+    name: "Deploy to Cloud"
+    needs: cloud-artifact
+    uses: ./.github/workflows/ps-cloud-deployment.yml
+    with:
+      artifactId: ${{ needs.cloud-artifact.outputs.artifactId }}
+      targetEnvironmentAlias: ${{ github.event.inputs.target }}
+      noBuildAndRestore: 1
+      skipVersionCheck: 1
+      allowAnyTarget: 1
+    secrets:
+      projectId: ${{ secrets.PROJECT_ID }}
+      umbracoCloudApiKey: ${{ secrets.UMBRACO_CLOUD_API_KEY }}

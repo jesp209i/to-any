@@ -1,0 +1,58 @@
+name: PowerShell Manual Only Deploy With Target # You can add your own name for the pipeline here
+
+# Trigger when committing to main branch
+on:
+  workflow_dispatch: # Allow manual triggering of the workflow
+    inputs:
+      artifactId:
+        description: 'The artifact ID to deploy'
+        required: true
+      target:
+        type: choice
+        description: Select target environment
+        default: dev
+        options: 
+        - dev
+        - stage
+        - live
+      skipBuildAndRestore:
+        description: 'Skip build and restore steps'
+        required: false
+        type: boolean
+        default: true
+      skipVersionCheck:
+        description: 'Skip version check'
+        required: false
+        type: boolean
+        default: true
+      allowAnyTarget:
+        description: 'Allows deployments to targets other than left-most or flexible'
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  hest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print input values
+        run: |
+          echo "restore: ${{ github.event.inputs.skipBuildAndRestore }}"
+          echo "version: ${{ github.event.inputs.skipVersionCheck }}"
+          echo "target: ${{ github.event.inputs.allowAnyTarget }}"
+  # Deploy to Umbraco Cloud
+  # ####
+  # you can edit the variables noBuildAndRestore, skipVersionCheck and allowAnyTarget
+  # use 0 for false and 1 for true
+  cloud-deployment:
+    name: "Deploy to Cloud"
+    uses: ./.github/workflows/ps-cloud-deployment.yml
+    with:
+      artifactId: ${{ github.event.inputs.artifactId }}
+      targetEnvironmentAlias: ${{ github.event.inputs.target }}
+      noBuildAndRestore: 1
+      skipVersionCheck: 1
+      allowAnyTarget: 1
+    secrets:
+      projectId: ${{ secrets.PROJECT_ID }}
+      umbracoCloudApiKey: ${{ secrets.UMBRACO_CLOUD_API_KEY }}

@@ -1,0 +1,35 @@
+name: Bash Manual Only Deploy With Target # You can add your own name for the pipeline here
+
+# Trigger when committing to main branch
+on:
+  workflow_dispatch: # Allow manual triggering of the workflow
+    inputs:
+      artifactId:
+        description: 'The artifact ID to deploy'
+        required: true
+      target:
+        type: choice
+        description: Select target environment
+        default: dev
+        options: 
+        - dev
+        - stage
+        - live
+
+jobs:
+  # Deploy to Umbraco Cloud
+  # ####
+  # you can edit the variables noBuildAndRestore, skipVersionCheck and allowAnyTarget
+  # use booleans but as strings
+  cloud-deployment:
+    name: "Deploy to Cloud"
+    uses: ./.github/workflows/cloud-deployment.yml
+    with:
+      artifactId: ${{ github.event.inputs.artifactId }}
+      targetEnvironmentAlias: ${{ github.event.inputs.target }}
+      noBuildAndRestore: "true"
+      skipVersionCheck: "true"
+      allowAnyTarget: "true"
+    secrets:
+      projectId: ${{ secrets.PROJECT_ID }}
+      umbracoCloudApiKey: ${{ secrets.UMBRACO_CLOUD_API_KEY }}
