@@ -1,7 +1,17 @@
 {
   "Deploy": {
     "Project": {
-      "Workspaces": []
+      "Name": "test cicd to any environment",
+      "Alias": "test-cicd-to-any-environment",
+      "Id": "8061d5e3-9b73-4344-aeb3-0036c738ed0c",
+      "Workspaces": [
+        {
+          "Id": "5fcbe813-b74e-4608-8e8a-8eb77817fb5f",
+          "Name": "Live",
+          "Type": "live",
+          "Url": "https://test-cicd-to-any-environment.euwest01.umbraco.io"
+        }
+      ]
     },
     "Settings": {}
   },
