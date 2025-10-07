@@ -1,0 +1,178 @@
+diff --git a/src/UmbracoProject/Views/StandardPage.cshtml b/src/UmbracoProject/Views/StandardPage.cshtml
+new file mode 100644
+index 0000000..4c3cdf4
+--- /dev/null
++++ b/src/UmbracoProject/Views/StandardPage.cshtml
+@@ -0,0 +1,15 @@
++﻿@using Umbraco.Cms.Web.Common.PublishedModels;
++@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
++@{
++	Layout = null;
++}
++<html>
++<head>
++	<title>Hest</title>
++</head>
++<body>
++	<h1>@Model.Value("title")</h1>
++	<div>@Model.Value("article")</div>
++</body>
++
++</html>
+\ No newline at end of file
+diff --git a/src/UmbracoProject/umbraco/Deploy/Revision/data-type__2d6596817ae74418bdf275bec9eccfbe.uda b/src/UmbracoProject/umbraco/Deploy/Revision/data-type__2d6596817ae74418bdf275bec9eccfbe.uda
+new file mode 100644
+index 0000000..bc5eeec
+--- /dev/null
++++ b/src/UmbracoProject/umbraco/Deploy/Revision/data-type__2d6596817ae74418bdf275bec9eccfbe.uda
+@@ -0,0 +1,62 @@
++{
++  "Name": "Standard Page - Article - Rich Text Editor [Tiptap] Property Editor UI",
++  "EditorAlias": "Umbraco.RichText",
++  "EditorUiAlias": "Umb.PropertyEditorUi.Tiptap",
++  "Configuration": {
++    "toolbar": [
++      [
++        [
++          "Umb.Tiptap.Toolbar.SourceEditor"
++        ],
++        [
++          "Umb.Tiptap.Toolbar.Bold",
++          "Umb.Tiptap.Toolbar.Italic",
++          "Umb.Tiptap.Toolbar.Underline"
++        ],
++        [
++          "Umb.Tiptap.Toolbar.TextAlignLeft",
++          "Umb.Tiptap.Toolbar.TextAlignCenter",
++          "Umb.Tiptap.Toolbar.TextAlignRight"
++        ],
++        [
++          "Umb.Tiptap.Toolbar.BulletList",
++          "Umb.Tiptap.Toolbar.OrderedList"
++        ],
++        [
++          "Umb.Tiptap.Toolbar.Blockquote",
++          "Umb.Tiptap.Toolbar.HorizontalRule"
++        ],
++        [
++          "Umb.Tiptap.Toolbar.Link",
++          "Umb.Tiptap.Toolbar.Unlink"
++        ],
++        [
++          "Umb.Tiptap.Toolbar.MediaPicker",
++          "Umb.Tiptap.Toolbar.EmbeddedMedia"
++        ]
++      ]
++    ],
++    "maxImageSize": 500,
++    "overlaySize": "medium",
++    "extensions": [
++      "Umb.Tiptap.Embed",
++      "Umb.Tiptap.Figure",
++      "Umb.Tiptap.Image",
++      "Umb.Tiptap.Link",
++      "Umb.Tiptap.MediaUpload",
++      "Umb.Tiptap.RichTextEssentials",
++      "Umb.Tiptap.Subscript",
++      "Umb.Tiptap.Superscript",
++      "Umb.Tiptap.Table",
++      "Umb.Tiptap.TextAlign",
++      "Umb.Tiptap.TextDirection",
++      "Umb.Tiptap.TextIndent",
++      "Umb.Tiptap.Underline",
++      "Umb.Tiptap.WordCount"
++    ]
++  },
++  "Udi": "umb://data-type/2d6596817ae74418bdf275bec9eccfbe",
++  "Dependencies": [],
++  "__type": "Umbraco.Deploy.Infrastructure,Umbraco.Deploy.Infrastructure.Artifacts.DataTypeArtifact",
++  "__version": "16.0.2"
++}
+\ No newline at end of file
+diff --git a/src/UmbracoProject/umbraco/Deploy/Revision/document-type__b306e25902e043d087f3844717e699cc.uda b/src/UmbracoProject/umbraco/Deploy/Revision/document-type__b306e25902e043d087f3844717e699cc.uda
+new file mode 100644
+index 0000000..5c3a35d
+--- /dev/null
++++ b/src/UmbracoProject/umbraco/Deploy/Revision/document-type__b306e25902e043d087f3844717e699cc.uda
+@@ -0,0 +1,57 @@
++{
++  "Name": "Standard Page",
++  "Alias": "standardPage",
++  "DefaultTemplate": "umb://template/580aa972a1d641f38052bda1ab5df976",
++  "AllowedTemplates": [
++    "umb://template/580aa972a1d641f38052bda1ab5df976"
++  ],
++  "HistoryCleanup": {},
++  "Icon": "icon-document-html",
++  "Thumbnail": "folder.png",
++  "Permissions": {
++    "AllowedAtRoot": true,
++    "AllowedChildContentTypes": []
++  },
++  "CompositionContentTypes": [],
++  "PropertyGroups": [
++    {
++      "Key": "7668e092-9544-473c-a2cf-e8756255f54a",
++      "Name": "Content",
++      "Alias": "content",
++      "PropertyTypes": [
++        {
++          "Key": "02a71d2e-65f9-408a-84a8-3e4ec0c2a03b",
++          "Alias": "title",
++          "DataType": "umb://data-type/0cc0eba1996042c9bf9b60e150b429ae",
++          "Name": "Title"
++        },
++        {
++          "Key": "b72909eb-0d0b-43c0-9e18-261a5f96d8f4",
++          "Alias": "article",
++          "DataType": "umb://data-type/2d6596817ae74418bdf275bec9eccfbe",
++          "Name": "Article",
++          "SortOrder": 1
++        }
++      ]
++    }
++  ],
++  "PropertyTypes": [],
++  "Udi": "umb://document-type/b306e25902e043d087f3844717e699cc",
++  "Dependencies": [
++    {
++      "Udi": "umb://data-type/0cc0eba1996042c9bf9b60e150b429ae",
++      "Ordering": true
++    },
++    {
++      "Udi": "umb://data-type/2d6596817ae74418bdf275bec9eccfbe",
++      "Ordering": true
++    },
++    {
++      "Udi": "umb://template/580aa972a1d641f38052bda1ab5df976",
++      "Ordering": true,
++      "Mode": "Exist"
++    }
++  ],
++  "__type": "Umbraco.Deploy.Infrastructure,Umbraco.Deploy.Infrastructure.Artifacts.ContentType.DocumentTypeArtifact",
++  "__version": "16.0.2"
++}
+\ No newline at end of file
+diff --git a/src/UmbracoProject/umbraco/Deploy/Revision/template__580aa972a1d641f38052bda1ab5df976.uda b/src/UmbracoProject/umbraco/Deploy/Revision/template__580aa972a1d641f38052bda1ab5df976.uda
+new file mode 100644
+index 0000000..bd5790a
+--- /dev/null
++++ b/src/UmbracoProject/umbraco/Deploy/Revision/template__580aa972a1d641f38052bda1ab5df976.uda
+@@ -0,0 +1,15 @@
++{
++  "Name": "Standard Page",
++  "Alias": "StandardPage",
++  "File": "umb://template-file/StandardPage.cshtml",
++  "Udi": "umb://template/580aa972a1d641f38052bda1ab5df976",
++  "Dependencies": [
++    {
++      "Udi": "umb://template-file/StandardPage.cshtml",
++      "Ordering": true,
++      "Mode": "Exist"
++    }
++  ],
++  "__type": "Umbraco.Deploy.Infrastructure,Umbraco.Deploy.Infrastructure.Artifacts.TemplateArtifact",
++  "__version": "16.0.2"
++}
+\ No newline at end of file
+
